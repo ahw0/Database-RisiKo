@@ -1,48 +1,39 @@
 # Database RisiKo
 
+## Index
 
-## Topics covered
-
-1. Description and analysis of the problem
-  * Summary of the type of problem commissioned
-  * Implementation adopted
-    * Constructive choices used to solve the problem
-2. Conceptual design
-  * Class diagram
-    * Conventions adopted in the class diagram
-  * Renewal of the class diagram
-    * Conventions adopted in the revised class diagram
-3. Data dictionary
-  * Dictionary composition
-4. Class Dictionary
-5. Association dictionaries
-6. Logical design
-  * Logical scheme
-7. Physical Design
-  * Implementation Details
-  * Tables Definition
-    * Table Definition: PARTITA
-    * Table Definition: GIOCATORE
-    * Table Definition: TURNO
-    * Table Definition: CARTA_OBIETTIVO
-    * Table Definition: TERRITORIO
-    * Table Definition: POSIZIONAMENTO_ARMATA
-    * Table Definition: COMBATTIMENTO
-    * Table Definition: LANCIO_DADI
-    * Table Definition: SPOSTAMENTO
-    * Table Definition: CONFINE
-    * Table Definition: CARTA_TERRITORIO
-    * Table Definition: TERRITORIO_OCCUPATO
-  * Associations implement by tables
-    * Association Table Definition: Ass_Carta_Terr_Giocatore
-
-___
-
-## Authors
-
-:it: : Simone Margio
-
-:it: : Marco Fiorillo
+1. [Description and analysis of the problem](#Description-and-analysis-of-the-problem)
+  * [Summary of the type of problem commissioned](#Summary-of-the-type-of-problem-commissioned)
+  * [Implementation adopted](#Implementation-adopted)
+    * [Constructive choices used to solve the problem](#Constructive-choices-used-to-solve-the-problem)
+2. [Conceptual design](#Conceptual-design)
+  * [Class diagram](#Class-diagram)
+    * [Conventions adopted in the class diagram](#Conventions-adopted-in-the-class-diagram)
+  * [Renewal of the class diagram](#Renewal-of-the-class-diagram)
+    * [Conventions adopted in the revised class diagram](#Conventions-adopted-in-the-revised-class-diagram)
+3. [Data dictionary](#Data-dictionary)
+  * [Dictionary composition](#Dictionary-composition)
+4. [Class dictionary](#Class-dictionary)
+5. [Association dictionaries](#Association-dictionaries)
+6. [Logical design](#Logical-design)
+  * [Logical scheme](#Logical-scheme)
+7. [Physical design](#Physical-design)
+  * [Implementation details](#Implementation-details)
+  * [Tables definition](#Tables-definition)
+    * [Table definition: PARTITA](#Table-definition-PARTITA)
+    * [Table definition: GIOCATORE](#Table-definition-GIOCATORE)
+    * [Table definition: TURNO](#Table-definition-TURNO)
+    * [Table definition: CARTA_OBIETTIVO](#Table-definition-CARTA_OBIETTIVO)
+    * [Table definition: TERRITORIO](#Table-definition-TERRITORIO)
+    * [Table definition: POSIZIONAMENTO_ARMATA](#Table-definition-POSIZIONAMENTO_ARMATA)
+    * [Table definition: COMBATTIMENTO](#Table-definition-COMBATTIMENTO)
+    * [Table definition: LANCIO_DADI](#Table-definition-LANCIO_DADI)
+    * [Table definition: SPOSTAMENTO](#Table-definition-SPOSTAMENTO)
+    * [Table definition: CONFINE](#Table-definition-CONFINE)
+    * [Table definition: CARTA_TERRITORIO](#Table-definition-CARTA_TERRITORIO)
+    * [Table definition: TERRITORIO_OCCUPATO](#Table-definition-TERRITORIO_OCCUPATO)
+  * [Associations implement by tables](#Associations-implement-by-tables)
+    * [Association table definition: Ass_Carta_Terr_Giocatore](#Association-table-definition-Ass_Carta_Terr_Giocatore)
 
 
 # Description and analysis of the problem
@@ -163,8 +154,8 @@ of the UML standard.
 ## Dictionary composition
 
 The data dictionary consists of two parts:
-- Class Dictionary
-- Association dictionaries
+- Class Dictionary.
+- Association dictionaries.
 
 In the first you get information about the classes implemented in the database.
 Here is a brief description of the following class of attribute attributes. For
@@ -336,36 +327,36 @@ well defined, you have chosen to use a numeric value.
 ### Table Definition: PARTITA
 
 ```sql
-/* PARTITA : contiene informazioni relative a ogni partita e al giocatore vincente */
+/* PARTITA : it contains information about each game and the winning player */
 CREATE TABLE PARTITA
 (
-    /* Attributi */
-    ID_PARTITA NUMBER (6) PRIMARY KEY , -- Identifica univocamente ogni singola partita con un valore numero crescente (non visibile all ' utente )
-    NOME_PARTITA VARCHAR2 (30) UNIQUE , -- Indrodotto per facilitare eventuali ricerche di una partita partendo dal suo nome ( visibile all ' utente )
-    DATA DATE NOT NULL , -- Utilizzato per eventuali query
-    ID_GAMER_VINC NUMBER (2) -- Informazione relativa all 'id ( numero identificativo ) del gioctore vincente
+    /* Attributes */
+    ID_PARTITA NUMBER (6) PRIMARY KEY , -- Uniquely identifies each individual game with an increasing number value (not visible to the user)
+    NOME_PARTITA VARCHAR2 (30) UNIQUE , -- Introduced to facilitate any searches for a game starting from its name (visible to the user)
+    DATA DATE NOT NULL , -- Used for any queries
+    ID_GAMER_VINC NUMBER (2) -- Information relating to the id (identification number) of the winning player
 );
 ```
 
 ### Table Definition: GIOCATORE
 
 ```sql
-/* GIOCATORE: contiene informazioni reletive ai giocatore presenti in ogni partita con i rispettivi obiettivi e il "giro" da effettuare */
+/* GIOCATORE: contains information relating to the players present in each game with their respective objectives and the "round" to be made */
 CREATE TABLE GIOCATORE
 (
     
-    /* Attributi Chiave */
-    ID_GAMER           NUMBER(1) NOT NULL,   -- Identificatore numerico (da 1 a 6) associato ad ogni giocatore in ogni partita
-    ID_PARTITA         NUMBER(6) NOT NULL,   -- Riferimento a ID_PARTITA nella tabella PARTITA
+    /* Key attributes */
+    ID_GAMER           NUMBER(1) NOT NULL,   -- Numeric identifier (1 to 6) associated with each player in each game
+    ID_PARTITA         NUMBER(6) NOT NULL,   -- Reference to ID_PARTITA in the table PARTITA
 
-    /* Attributi */
-    COLORE             CHAR(1),              -- Identifica il colore scelto dalla armate del giocatore. Puo' essere: R (Rosso), N (Nero), G (Giallo), V (Verde), B (Blu), U (Viola)
-    NICKNAME           VARCHAR2(30),         -- Identifica il nickname scelto dal giocatore
-    ID_CARTA_OBIETTIVO NUMBER(6),            -- Riferimento a ID_CARTA nella tabella CARTA_OBIETTIVO
-    Posizione_Turno    NUMBER(1),            -- Stabilisce in maniera numerica (da 1 a 6 a seconda dei giocatori) il turno/giro dei vari giocatori. (nda: in partica a chi tocca)
-    N_Armate_Tot       NUMBER(32) DEFAULT 0, -- Informazione relativa alle armate tatali possedute dal giocatore in tutto il mondo
+    /* Attributes */
+    COLORE             CHAR(1),              -- Identifies the color chosen by the player's armies. It can be: R (Red), N (Black), G (Yellow), V (Green), B (Blue), U (Purple)
+    NICKNAME           VARCHAR2(30),         -- Identifies the nickname chosen by the player
+    ID_CARTA_OBIETTIVO NUMBER(6),            -- Reference to ID_CARTA in the table CARTA_OBIETTIVO
+    Posizione_Turno    NUMBER(1),            -- It establishes numerically (from 1 to 6 according to the players) the turn / turn of the various players. (editor's note: in particular to whom it belongs)
+    N_Armate_Tot       NUMBER(32) DEFAULT 0, -- Information relating to the total armies owned by the player worldwide
     
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Giocatore PRIMARY KEY (ID_GAMER,ID_PARTITA) ENABLE,
     CONSTRAINT FK_ID_Partita FOREIGN KEY (ID_PARTITA) REFERENCES PARTITA (ID_PARTITA) ON DELETE CASCADE ENABLE,
     CONSTRAINT FK_ID_Carta_Obiettivo FOREIGN KEY (ID_CARTA_OBIETTIVO) REFERENCES CARTA_OBIETTIVO(ID_CARTA),
@@ -377,17 +368,17 @@ CREATE TABLE GIOCATORE
 ### Table Definition: TURNO
 
 ```sql
-/* TURNO: contiene informazioni riguardante ogni singolo turno svolto da ogni giocatore in partita. Turno permette di creare ordine in base alle azioni svolte. */
+/* TURNO: it contains information regarding every single turn played by each player in the game. Turn allows you to create order based on the actions performed */
 CREATE TABLE TURNO
 (
-    /* Attributi Chiave */
-    ID_TURNO    NUMBER(6) DEFAULT 0, -- Valore numerico crescente che identifica il turno di ogni giocatore. Quando turno e' 0 (zero) si eseguono le azioni del turno preliminare (conto giocatori, scelta giro, assegnazione carte ecc...)
-    ID_PARTITA  NUMBER(6) NOT NULL,  -- Riferimento a ID_PARTITA nella tabella PARTITA
+    /* Key attributes */
+    ID_TURNO    NUMBER(6) DEFAULT 0, -- Increasing numerical value that identifies each player's turn. When turn is 0 (zero) the actions of the preliminary turn are performed (player account, spin choice, card assignment etc ...)
+    ID_PARTITA  NUMBER(6) NOT NULL,  -- Reference to ID_PARTITA in the table PARTITA
 
-    /* Attributi */
-    ID_GAMER    NUMBER(1) NOT NULL,  -- Riferimento a ID_GAMER nella tabella GIOCATORE
+    /* Attributes */
+    ID_GAMER    NUMBER(1) NOT NULL,  -- Reference to ID_GAMER in the table GIOCATORE
  
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Turno PRIMARY KEY (ID_TURNO, ID_PARTITA) ENABLE,
     CONSTRAINT FK_Turno_ID_Partita FOREIGN KEY (ID_PARTITA) REFERENCES PARTITA (ID_PARTITA) ON DELETE CASCADE ENABLE,
     CONSTRAINT FK_Turno_ID_Gamer FOREIGN KEY (ID_GAMER,ID_PARTITA) REFERENCES GIOCATORE (ID_GAMER,ID_PARTITA) ON DELETE CASCADE ENABLE
@@ -397,16 +388,16 @@ CREATE TABLE TURNO
 ### Table Definition: CARTA_OBIETTIVO
 
 ```sql
-/* CARTA_OBIETTIVO: contiene informazioni reletive alle carte di tipo obiettivo */
+/* CARTA_OBIETTIVO: contains information related to objective cards */
 CREATE TABLE CARTA_OBIETTIVO
 (
-    /* Attributi Chiave */
-    ID_CARTA    NUMBER(6) NOT NULL,     -- Identifica ogni singola carta obiettivo
+    /* Key attributes */
+    ID_CARTA    NUMBER(6) NOT NULL,     -- Identify each individual target card
 
-    /* Attributi */
-    DESCRIZIONE VARCHAR2(400) NOT NULL, -- Descrizione visibile al giocatore riguardante l'obiettivo da completare
+    /* Attributes */
+    DESCRIZIONE VARCHAR2(400) NOT NULL, -- Description visible to the player regarding the objective to be completed
     
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Carta_Obiettivo PRIMARY KEY (ID_CARTA) ENABLE
 );
 ```
@@ -414,18 +405,18 @@ CREATE TABLE CARTA_OBIETTIVO
 ### Table Definition: TERRITORIO
 
 ```sql
-/* TERRITORIO: contiene informazioni relative ai territori presenti nel gioco */
+/* TERRITORIO: contains information related to the territories in the game */
 CREATE TABLE TERRITORIO
 (
-    /* Attributi Chiave */
-    ID_TERRITORIO   NUMBER(2) NOT NULL,    -- Valore numerico che identifica il territorio
+    /* Key attributes */
+    ID_TERRITORIO   NUMBER(2) NOT NULL,    -- Numerical value that identifies the territory
 
-    /* Attributi */
-    NOME_TERRITORIO VARCHAR2(60) UNIQUE,   -- Nome associato al valore numerico di un territorio
-    ID_CONTINENTE   NUMBER(1) NOT NULL,    -- Valore numerico che identifica un continenete comprendente n° territori
-    NOME_CONTINENTE VARCHAR2(60) NOT NULL, -- Nome associato al valore numerico di un territorio
+    /* Attributes */
+    NOME_TERRITORIO VARCHAR2(60) UNIQUE,   -- Name associated with the numeric value of a territory
+    ID_CONTINENTE   NUMBER(1) NOT NULL,    -- Numerical value that identifies a continent comprising n ° territories
+    NOME_CONTINENTE VARCHAR2(60) NOT NULL, -- Name associated with the numeric value of a territory
    
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Territorio PRIMARY KEY (ID_TERRITORIO) ENABLE
 );
 ```
@@ -433,27 +424,28 @@ CREATE TABLE TERRITORIO
 ### Table Definition: POSIZIONAMENTO_ARMATA
 
 ```sql
-/* POSIZIONAMENTO_ARMATA: contiene informazioni relative alla prima fase di gioco che prevedere il posizionamento di tot armate */
+/* POSIZIONAMENTO_ARMATA: it contains information relating to the first phase of the game which involves the positioning of tot armies */
 CREATE TABLE POSIZIONAMENTO_ARMATA
 (
-    /* Attributi Chiave */
-    ID_POSIZIONAMENTO NUMBER(6) NOT NULL,               -- Valore numerico crescente che identifica ongi singolo spostamento da parte dei giocatori
-    ID_TURNO          NUMBER(6) NOT NULL,               -- Riferimento a ID_TURNO nella tabella TURNO
-    ID_PARTITA        NUMBER(6) NOT NULL,               -- Riferimento a ID_PARTITA nella tabella TURNO->PARTITA
+    /* Key attributes */
+    ID_POSIZIONAMENTO NUMBER(6) NOT NULL,               -- Increasing numerical value that identifies each individual movement by the players
+    ID_TURNO          NUMBER(6) NOT NULL,               -- Reference to ID_TURNO in the table TURNO
+    ID_PARTITA        NUMBER(6) NOT NULL,               -- Reference to ID_PARTITA in the table TURNO->PARTITA
 
-    /* Attributi */
-    RINFORZI_TRUPPE   NUMBER(3) NOT NULL,               -- Numero di truppe che il giocatore guadagna dopo ogni turno e/o dal bonus carte che ha a disposizione
-    TIPO_POSIZIONAMENTO NUMBER(1) NOT NULL,             -- Valore numerico che indica la tipologia di posizionamento effettuata dal giocatore 
+    /* Attributes */
+    RINFORZI_TRUPPE   NUMBER(3) NOT NULL,               -- Number of troops the player earns after each turn and / or from the bonus card he has available
+    TIPO_POSIZIONAMENTO NUMBER(1) NOT NULL,             -- Numeric value indicating the type of positioning made by the player
+    
     ID_TERRITORIO_POS NUMBER(2) NOT NULL,
       
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Pos_Armata PRIMARY KEY (ID_POSIZIONAMENTO, ID_PARTITA, ID_TURNO) ENABLE,
     CONSTRAINT FK_Pos_Turno FOREIGN KEY (ID_TURNO, ID_PARTITA) REFERENCES TURNO (ID_TURNO, ID_PARTITA) ON DELETE CASCADE ENABLE, -- Default No Action
     CONSTRAINT Controllo_Posizionamento CHECK (TIPO_POSIZIONAMENTO IN('0','1','2','3','4','5','6','7','8')) ENABLE,
-    -- Valori numerici:
-    -- 0 = Inserimento di fase preliminare 
-    -- 1 = Inserimento classico
-    -- 2 a 8 = Inserimenti derivati dalla combinazione di carte scelta (ulteriori info nella documentazione dell'applicativo)
+    -- Numerical values:
+    -- 0 = Insertion of preliminary phase
+    -- 1 = Classic insertion
+    -- 2 to 8 = Entries derived from the combination of cards chosen (more info in the application documentation)
     CONSTRAINT FK_ID_Territorio_Pos FOREIGN KEY (ID_TERRITORIO_POS) REFERENCES TERRITORIO(ID_TERRITORIO) ENABLE
 );
 ```
@@ -461,28 +453,29 @@ CREATE TABLE POSIZIONAMENTO_ARMATA
 ### Table Definition: COMBATTIMENTO
 
 ```sql
-/* COMBATTIMENTO: contiene informazioni relative alla seconda fase di gioco che puo' effettuare un giocatore nel suo turno */
+/* COMBATTIMENTO: it contains information related to the second phase of the game that a player can perform in his turn */
 CREATE TABLE COMBATTIMENTO
 (
-    /* Attributi Chiave */
-    ID_COMB                  NUMBER(6) NOT NULL,    -- Valore crescente associato ad ogni combattimento effettuato
-    ID_TURNO                 NUMBER(6) NOT NULL,    -- Riferimento a ID_TURNO nella tabella TURNO
-    ID_PARTITA               NUMBER(6) NOT NULL,    -- Riferimento a ID_PARTITA nella tabella TURNO->PARTITA
+    /* Key attributes */
+    ID_COMB                  NUMBER(6) NOT NULL,    -- Increasing value associated with each fight made
+    ID_TURNO                 NUMBER(6) NOT NULL,    -- Reference to ID_TURNO in the table TURNO
+    ID_PARTITA               NUMBER(6) NOT NULL,    -- Reference to ID_PARTITA in the table TURNO->PARTITA
     
-    /*Attributi*/
-    ID_G_DIFENSORE           NUMBER(1) NOT NULL,    -- Riferimento a ID_GAMER nella tabella GIOCATORE
-    VINCENTE                 NUMBER(1) ,            -- 1 se tale combattimento ha portato ad una conquista; 0 se è stato infruttuoso.
-    TIPO_AVANZAMENTO         NUMBER(1) ,            -- 1 Se le armate d'avanzare sono quelle pari al numero di dadi lanciati; 2 Se le armate d'avanzare sono tutte le armate presenti sul territorio meno uno.
-    ID_TERRITORIO_ATTACCANTE NUMBER(2) NOT NULL,    -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
-    ID_TERRITORIO_ATTACCATO  NUMBER(2) NOT NULL,    -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
+    /* Attributes */
+    ID_G_DIFENSORE           NUMBER(1) NOT NULL,    -- Reference to ID_GAMER nella tabella GIOCATORE
+    VINCENTE                 NUMBER(1) ,            -- 1 if such a fight led to a conquest; 0 if it has been unsuccessful
     
-    /* Vincoli */
+    TIPO_AVANZAMENTO         NUMBER(1) ,            -- 1 If the armies to advance are those equal to the number of dice rolled; 2 If the advancing armies are all the armies present in the territory minus one
+    ID_TERRITORIO_ATTACCANTE NUMBER(2) NOT NULL,    -- Reference to ID_TERRITORIO in the table TERRITORIO
+    ID_TERRITORIO_ATTACCATO  NUMBER(2) NOT NULL,    -- Reference to ID_TERRITORIO in the table TERRITORIO
+    
+    /* Constraints */
     CONSTRAINT PK_Combattimento PRIMARY KEY (ID_COMB, ID_TURNO, ID_PARTITA) ENABLE,
     CONSTRAINT FK_Combattimento_Turno FOREIGN KEY (ID_TURNO, ID_PARTITA) REFERENCES TURNO(ID_TURNO, ID_PARTITA) ON DELETE CASCADE ENABLE,
     CONSTRAINT FK_Terr_Attaccante FOREIGN KEY (ID_TERRITORIO_ATTACCANTE) REFERENCES TERRITORIO(ID_TERRITORIO) ENABLE,   -- Default No Action
     CONSTRAINT FK_Terr_Attaccato FOREIGN KEY (ID_TERRITORIO_ATTACCATO) REFERENCES TERRITORIO(ID_TERRITORIO) ENABLE,     -- Default No Action
     CONSTRAINT FK_Difensore FOREIGN KEY (ID_G_DIFENSORE, ID_PARTITA) REFERENCES GIOCATORE(ID_GAMER, ID_PARTITA) ON DELETE CASCADE ENABLE,
-    CONSTRAINT TIPO_S CHECK((TIPO_AVANZAMENTO = 1) OR ( TIPO_AVANZAMENTO = 2)), -- 1 Se dopo un attacco devono esser spostare SOLO le armate pari ai dadi lanciati; 2 Se devono esser spostate tutte le armate presenti sul territorio.
+    CONSTRAINT TIPO_S CHECK((TIPO_AVANZAMENTO = 1) OR ( TIPO_AVANZAMENTO = 2)), -- 1 If after an attack ONLY armies equal to the dice rolled must be moved; 2 If all the armies in the territory are to be moved.
     CONSTRAINT TIPO_V CHECK((VINCENTE = 0) OR (VINCENTE = 1))
 );
 ```
@@ -490,27 +483,27 @@ CREATE TABLE COMBATTIMENTO
 ### Table Definition: LANCIO_DADI
 
 ```sql
-/* LANCIO DADI: contiene informazioni sul lancio dei dadi effettuati dal giocatore attaccate e difensore */  
+/* LANCIO DADI: contains information on the dice roll made by the attacking player and defender */  
 CREATE TABLE LANCIO_DADI
 (
-    /* Attributi Chiave */
-    ID_COMB       NUMBER(6),           -- Valore crescente associato ad ogni combattimento effettuato
-    N_LANCIO      NUMBER(6) NOT NULL,  -- Valore numerico usato come chiave tecnica assieme a ID_TURNO, ID_PARTITA 
-    ID_TURNO      NUMBER(6) NOT NULL,  -- Riferimento a ID_TURNO nella tabella TURNO
-    ID_PARTITA    NUMBER(6) NOT NULL,  -- Riferimento a ID_PARTITA nella tabella TURNO->PARTITA
+    /* Key attributes */
+    ID_COMB       NUMBER(6),           -- Increasing value associated with each fight made
+    N_LANCIO      NUMBER(6) NOT NULL,  -- Numerical value used as a technical key together with ID_TURNO, ID_PARTITA 
+    ID_TURNO      NUMBER(6) NOT NULL,  -- Reference to ID_TURNO in the table TURNO
+    ID_PARTITA    NUMBER(6) NOT NULL,  -- Reference to ID_PARTITA in the table TURNO->PARTITA
     
-    /*Attributi*/
-    DADO1_ATT     NUMBER(1) NOT NULL,  -- Dado 1 usato dall'attaccante (Not null prevede che ci debba essere almeno un dado da lanciare per poter essere in fase di combattimento/difesa)
-    DADO2_ATT     NUMBER(1),           -- Dado 2 usato dall'attaccante
-    DADO3_ATT     NUMBER(1),           -- Dado 3 usato dall'attaccante
-    DADO1_DIFF    NUMBER(1) NOT NULL,  -- Dado 1 usato dall'difensore
-    DADO2_DIFF    NUMBER(1),           -- Dado 2 usato dall'difensore
-    DADO3_DIFF    NUMBER(1),           -- Dado 3 usato dall'difensore
+    /* Attributes */
+    DADO1_ATT     NUMBER(1) NOT NULL,  -- Dice 1 used by the attacker (Not null requires that there must be at least one die to be rolled in order to be in the combat / defense phase)
+    DADO2_ATT     NUMBER(1),           -- Dice 2 used by the attacker
+    DADO3_ATT     NUMBER(1),           -- Dice 3 used by the attacker
+    DADO1_DIFF    NUMBER(1) NOT NULL,  -- Dice 1 used by the defender
+    DADO2_DIFF    NUMBER(1),           -- Dice 2 used by the defender
+    DADO3_DIFF    NUMBER(1),           -- Dice 3 used by the defender
     
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Lancio_Dadi PRIMARY KEY (ID_PARTITA, ID_TURNO, ID_COMB, N_LANCIO) ENABLE,
     CONSTRAINT FK_Lancio_Dadi_Comabttimento FOREIGN KEY (ID_TURNO, ID_PARTITA,ID_COMB) REFERENCES COMBATTIMENTO(ID_TURNO, ID_PARTITA,ID_COMB) ON DELETE CASCADE ENABLE, -- Default No Action
-    /* Viene fatto un controllo per il numero massimo e minimo di ogni dado */
+    /* A check is made for the maximum and minimum numbers of each die */
     CONSTRAINT Val_Dadi CHECK((DADO1_ATT BETWEEN 1 AND 6) AND (DADO2_ATT BETWEEN 1 AND 6) AND (DADO3_ATT BETWEEN 1 AND 6) AND (DADO1_DIFF BETWEEN 1 AND 6) AND (DADO2_DIFF BETWEEN 1 AND 6) AND (DADO3_DIFF BETWEEN 1 AND 6))
 );
    
@@ -519,19 +512,19 @@ CREATE TABLE LANCIO_DADI
 ### Table Definition: SPOSTAMENTO
 
 ```sql
-/* SPOSTAMENTO: contiene informazioni relative alla terza fase di gioco per lo spostamento eventuale di armate  */
+/* SPOSTAMENTO: it contains information relating to the third phase of the game for the possible movement of armies  */
 CREATE TABLE SPOSTAMENTO
 (
-    /* Attributi Chiave */
-    ID_TURNO               NUMBER(6) NOT NULL,    -- Riferimento a ID_TURNO nella tabella TURNO
-    ID_PARTITA             NUMBER(6) NOT NULL,    -- Riferimento a ID_PARTITA nella tabella TURNO->PARTITA
+    /* Key attributes */
+    ID_TURNO               NUMBER(6) NOT NULL,    -- Reference to ID_TURNO in the table TURNO
+    ID_PARTITA             NUMBER(6) NOT NULL,    -- Reference to ID_PARTITA in the table TURNO->PARTITA
 
-    /* Attributi */
-    ID_TERRITORIO_PARTENZA NUMBER(2) NOT NULL,    -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
-    ID_TERRITORIO_ARRIVO   NUMBER(2) NOT NULL,    -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
+    /* Attributes */
+    ID_TERRITORIO_PARTENZA NUMBER(2) NOT NULL,    -- Reference to ID_TERRITORIO in the table TERRITORIO
+    ID_TERRITORIO_ARRIVO   NUMBER(2) NOT NULL,    -- Reference to ID_TERRITORIO in the table TERRITORIO
     TRUPPE_SPOSTATE        NUMBER(9) NOT NULL,
     
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Spostamento PRIMARY KEY (ID_PARTITA, ID_TURNO) ENABLE,
     CONSTRAINT FK_Spostamento_Turno FOREIGN KEY (ID_TURNO, ID_PARTITA) REFERENCES TURNO(ID_TURNO, ID_PARTITA) ON DELETE CASCADE ENABLE, -- Default No Action
     CONSTRAINT FK_Terr_Partenza FOREIGN KEY (ID_TERRITORIO_PARTENZA) REFERENCES TERRITORIO(ID_TERRITORIO) ENABLE,     -- Default No Action
@@ -543,14 +536,14 @@ CREATE TABLE SPOSTAMENTO
 ### Table Definition: CONFINE
 
 ```sql
-/* CONFINE: contiene informazioni relative ai confini presenti nel gioco */
+/* CONFINE: contains information about the boundaries in the game */
 CREATE TABLE CONFINE
 (
-    /* Attributi */
-    ID_TERRITORIO NUMBER(2) NOT NULL, -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
-    ID_CONFINANTE NUMBER(2) NOT NULL, -- Valore numerico associato ad ogni confine presente
+    /* Attributes */
+    ID_TERRITORIO NUMBER(2) NOT NULL, -- Reference to ID_TERRITORIO in the TERRITORIO table
+    ID_CONFINANTE NUMBER(2) NOT NULL, -- Numerical value associated with each border present
    
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT FK_ID_Territorio FOREIGN KEY (ID_TERRITORIO) REFERENCES TERRITORIO (ID_TERRITORIO) ENABLE, -- Default No Action
     CONSTRAINT FK_ID_Confinante FOREIGN KEY (ID_CONFINANTE) REFERENCES TERRITORIO (ID_TERRITORIO) ENABLE  -- Default No Action
 );
@@ -560,17 +553,17 @@ CREATE TABLE CONFINE
 ### Table Definition: CARTA_TERRITORIO
 
 ```sql
-/* CARTA TERRITORIO: contiene informazioni relative alle carte territorio presenti nel gioco */
+/* CARTA TERRITORIO: contains information about the territory cards in the game */
 CREATE TABLE CARTA_TERRITORIO
 (
-    /* Attributi Chiave */
-    ID_CARTA      NUMBER(6) NOT NULL,   -- Valore numerico che identifica ogni carta associata a un territorio
+    /* Key attributes */
+    ID_CARTA      NUMBER(6) NOT NULL,   -- Numerical value that identifies each card associated with a territory
 
-    /* Attributi */
-    TERRITORIO    VARCHAR2(400) UNIQUE, -- Nome di riferimento al territorio
-    SIMBOLO_CARTA CHAR,                 -- Identifica l'attributo associato alla carta: J (Jolly), O (Obiettivo), F (Fanteria), C (Cavalleria), A (Artiglieria)
+    /* Attributes */
+    TERRITORIO    VARCHAR2(400) UNIQUE, -- Name of reference to the territory
+    SIMBOLO_CARTA CHAR,                 -- Identifies the attribute associated with the card: J (Jolly), O (Objective), F (Infantry), C (Cavalry), A (Artillery)
 
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Carta_Territorio PRIMARY KEY(ID_CARTA) ENABLE,
     CONSTRAINT CartaType CHECK(SIMBOLO_CARTA IN('J', 'O', 'F', 'C', 'A')) ENABLE
 );
@@ -580,18 +573,18 @@ CREATE TABLE CARTA_TERRITORIO
 ### Table Definition: TERRITORIO_OCCUPATO
 
 ```sql
-/* TERRITORIO OCCUPATO: contiene informazioni su i territori occupati dai giocatori di una partita */
+/* TERRITORIO OCCUPATO: contains information on the territories occupied by the players of a game */
 CREATE TABLE TERRITORIO_OCCUPATO
 (
-    /* Attributi Chiave */
-    ID_TERRITORIO       NUMBER(2) NOT NULL, -- Riferimento a ID_TERRITORIO nella tabella TERRITORIO
-    GIOCATORE_OCCUPANTE NUMBER(1) NOT NULL, -- Giocatore che occupa il territorio
-    ID_PARTITA          NUMBER(6) NOT NULL, -- Riferimento a ID_PARTITA nella tabella GIOCATORE->PARTITA
+    /* Key attributes */
+    ID_TERRITORIO       NUMBER(2) NOT NULL, -- Reference to ID_TERRITORIO in the table TERRITORIO
+    GIOCATORE_OCCUPANTE NUMBER(1) NOT NULL, -- Player occupying the territory
+    ID_PARTITA          NUMBER(6) NOT NULL, -- Reference to ID_PARTITA in the table GIOCATORE->PARTITA
 
-    /* Attributi */
+    /* Attributes */
     QUANTITA_TRUPPE     NUMBER(9) DEFAULT 1,
 
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Giocatore_Territorio PRIMARY KEY (ID_TERRITORIO, GIOCATORE_OCCUPANTE, ID_PARTITA) ENABLE,
     CONSTRAINT FK_PK_Terr FOREIGN KEY(ID_TERRITORIO) REFERENCES TERRITORIO(ID_TERRITORIO) ENABLE,
     CONSTRAINT FK_PK_Giocatore FOREIGN KEY (GIOCATORE_OCCUPANTE, ID_PARTITA) REFERENCES GIOCATORE(ID_GAMER, ID_PARTITA) ON DELETE CASCADE ENABLE
@@ -610,15 +603,15 @@ each player's position, he preferred to enter the table's keys **GIOCATORE** and
 **CARTA_TERRITORIO** in this table.
 
 ```sql
-/* ASS CARTA TERRITORIO GIOCATORE: contiene informazioni aggiuntive per la ricerca ottimale di ogni carta associata a un giocatore */
+/* ASS CARTA TERRITORIO GIOCATORE: contains additional information for optimal search of each card associated with a player */
 CREATE TABLE ASS_CARTA_TERRITORIO_GIOCATORE
 (
-    /* Attributi Chiave */
-    ID_CARTA   NUMBER(6) NOT NULL, -- Riferimento a ID_CARTA nella tabella CARTA_TERRITORIO
-    ID_GAMER   NUMBER(1) NOT NULL, -- Riferimento a ID_GAMER nella tabella GIOCATORE
-    ID_PARTITA NUMBER(6) NOT NULL, -- RIFERIMENTO a ID_PARTITA nella tabella GIOCATORE->PARTITA
+    /* Key attributes */
+    ID_CARTA   NUMBER(6) NOT NULL, -- Reference to ID_CARTA in the table CARTA_TERRITORIO
+    ID_GAMER   NUMBER(1) NOT NULL, -- Reference to ID_GAMER in the table GIOCATORE
+    ID_PARTITA NUMBER(6) NOT NULL, -- Reference to ID_PARTITA in the table GIOCATORE->PARTITA
 
-    /* Vincoli */
+    /* Constraints */
     CONSTRAINT PK_Ass_C_Terr_g PRIMARY KEY(ID_CARTA,ID_GAMER,ID_PARTITA) ENABLE,
     CONSTRAINT FK_Ass_Carta FOREIGN KEY (ID_GAMER,ID_PARTITA) REFERENCES GIOCATORE (ID_GAMER,ID_PARTITA) ON DELETE CASCADE ENABLE,
     CONSTRAINT FK_Ass_Gamer FOREIGN KEY (ID_CARTA) REFERENCES CARTA_TERRITORIO (ID_CARTA) ON DELETE CASCADE ENABLE
