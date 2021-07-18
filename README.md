@@ -70,22 +70,19 @@ Defined the game and the players, as by regulation there are three stages on whi
 game: Armed Forces, Fighting and Moving. All three phases are managed through shifts. A turn represents the exact occurrence of all three phases. It is managed by
 increasing sequential numeric values. Each player's turn will be associated with the player
 three phases. The choice of the player to handle the turn is handled by the database.
-This associates with each player, in addition to his previously seen ID, another numeric value
-randomly chosen from the set of values ranging from one to the exact number of players
-(for example, a 4 player game will make the set of values 1 to 4). These
-The values associated with the players determine, from the smallest to the greatest, the exact order they come from
+These associates with each player, in addition to his previously seen ID, another numeric value
+is randomly chosen from the set of values ranging from one to the exact number of players
+(for example, a 4 player game will make the set of values 1 to 4). These values associated with the players determine, from the smallest to the greatest, the exact order they come from
 played the round of a match.
 
-The management of all present numeric values is done by avoiding the use of structures such as the
-sequences. These should be generated and set in the correct way for each game creation.
-To avoid such problems, the database has been structured to handle it in a simple way
-and clean all the numeric values (a trivial example is if you want to increase the numeric value of the
+The management of all present numeric values is done by avoiding the use of structures such as sequences. These should be generated and set in the correct way for each game creation.
+To avoid such problems, the database has been structured to handle it simply and clean all the numeric values (a trivial example is if you want to increase the numeric value of the
 turn to go to the next turn. The database will simply take the numeric value of the turn
 previous and will increase it by one unit, obtaining a new turn).
 
-The only structure created by the database, using dynamic sql, for each game is a view containing
+The only structure created by the database, using dynamic SQL, for each game is a view containing
 the number of territories won, for each continent, of each player.
-The use of the view allows you to know if a player is in possession of all the territories of one or more
+The use of the view allows you to know if a player has all the territories of one or more
 continents, as well as no more than any territory. The view plays a fundamental role
 especially in the last case. As said every turn is associated with a player. Before starting the three
 gambling steps are checked through the view if the player holds at least one territory. If not
@@ -95,7 +92,7 @@ Returning to the three stages of play, their execution order is bound by the app
 which will prevent the user, for example, from executing the second combat phase and then the first
 armed arrangement phase. Most of the checks that have been made have been
 implemented both on the side of the database and on the application side. Initially, the choice was weighted in dividing the i
-controls between database and application. It was preferred not to proceed for this direction as it is
+controls between database and application. It was preferred not to proceed in this direction as it is
 wanted to create a database capable of self-management even without the intervention of a written application
 ad hoc to make various entries. This allows the database to handle step by step progress
 of a game because it has all the controls created based on the game rules. Furthermore
@@ -104,7 +101,7 @@ part or all.
 
 A final analysis is to be made for those that were initially defined as "automation of certain
 actions. "As far as the database has the sole purpose of storing data, it has been
-introduced techniques that allow the taking of certain actions in a simpler and more clean way.
+introduced techniques that allow the taking of certain actions more simply and cleanly.
 An example is the one seen before, ie the task of asking the database for automatic selection
 of the lap they will have to make players. The same is done when you proceed to
 start a game. The phase involves the mixing of territorial cards and then entrusting them, an ad
@@ -120,12 +117,12 @@ Database design begins, starting with the highest abstraction level.
 From the requirements analysis will develop a conceptual framework independent of the data structure and
 from physical implementation. This will be developed using a Class Diagram UML that will have it
 The aim is to represent, at a theoretical level, the entities and relationships that will then be developed and implemented
-of the database.
+in the database.
 
 ### Conventions adopted in the class diagram
 
 It was preferred to explicitly indicate every multiplicity; ignoring the convention that it does not express those of multiplicity [1]. Furthermore
-every description of the relationships and entities was preferred to integrate it directly into the class diagram.
+every description of the relationships and entities was preferred to integrate directly into the class diagram.
 This is to make the scheme more readily available to the reader. Without having to resort to
 appendices aside, but directly answering the notes that are fully supported
 from the UML standard.
@@ -143,7 +140,7 @@ All specializations, structured and multiple attributes, and finally, hierarchie
 
 The same road was followed
 for the previous logic scheme. Then the multiplicities of [1] will be explicitly made
-and, moreover, notes and any integration has been directly inserted in the scheme in full respect
+and notes and any integration has been directly inserted in the scheme in full respect
 of the UML standard.
 
 ![main](https://cloud.githubusercontent.com/assets/22590804/23475044/5c7124a2-feb6-11e6-9b2e-29d1ad783c80.png)
@@ -159,11 +156,11 @@ The data dictionary consists of two parts:
 In the first you get information about the classes implemented in the database.
 Here is a brief description of the following class of attribute attributes. For
 each attribute specifies the type, its implementation within the database, and a description
-which shows its use.
+that shows its use.
 In the second part, the associations are analyzed according to the class renovation model
 diagram.
 Each association is highlighted by a name, followed by a brief description showing the correlation
-between two classes.
+between the two classes.
 Finally, the cardinalities and the meaning of the association between the two classes are analyzed.
 
 # Class Dictionary
@@ -271,7 +268,7 @@ Finally, the cardinalities and the meaning of the association between the two cl
 | Action | It expresses the movement of a displaced territory | **Spostamento → Territorio_Occupato** [1]: one shift can be made per shift |
 |   |   | **Territorio_Occupato → Spostamento** [0..1]: Moving is optional or is done only once |
 | | | |
-| Territory membership | It expresses the territorial belonging to the players of a game | **Giocatore → Territorio_Occupato** [0..*]: a player without territories is considered loser otherwise holds N possible territories |
+| Territory membership | It expresses the territorial belonging to the players of a game | **Giocatore → Territorio_Occupato** [0..*]: a player without territories is considered a loser otherwise holds N possible territories |
 |   |   | **Territorio_Occupato → Giocatore** [1]: the territory belongs to a single player |
 | | | |
 | Territory composition | It expresses the structure of a territory where a player resides | **Territorio_Occupato → Territorio** [1]: the territory occupied by a player refers to a territory |
@@ -280,7 +277,7 @@ Finally, the cardinalities and the meaning of the association between the two cl
 | Border Composition | It expresses the structure of a boundary related to the territories | **Territorio → Confine** [1..*]: a territory can have N boundaries |
 |   |   | **Confine → Territorio** [1]: each boundary is associated with a territory |
 | | | |
-| Owned territory cards | It expresses the membership of the territory cards to the players of a game | **Giocatore → Carta_Territorio** [0..*]: a losing player does not have any cards. Opposite case may possess N cards |
+| Owned territory cards | It expresses the membership of the territory cards to the players of a game | **Giocatore → Carta_Territorio** [0..*]: a losing player does not have any cards. The opposite case may possess N cards |
 |   |   | **Carta_Territorio → Giocatore** [0..1]: each card belongs to a player or to anyone (it's in the deck) |
 | | | |
 | Holds objective cards | It expresses the membership of goal cards to players in a game | **Giocatore → Carta_Obiettivo** [1]: each player has one goal |
@@ -289,11 +286,9 @@ Finally, the cardinalities and the meaning of the association between the two cl
 
 # Logical design
 ## Logical scheme
-At this stage of the database design, you get a level of abstraction compared to
-previous part.
-It will translate the conceptual scheme (already prepared for this purpose by means of a restructuring) in
-a logical scheme, depending on the type of data selected, that is the pure relational type.
-In the relational schemes that follow the primary keys will be indicated in **Bold** ,
+At this stage of the database design, you get a level of abstraction compared to the previous part.
+It will translate the conceptual scheme (already prepared for this purpose through a restructuring) into a logical scheme, depending on the type of data selected, that is the pure relational type.
+The relational schemes that follow the primary keys will be indicated in **Bold**,
 while the external keys will be indicated in *italic*. If a primary key
 is composed of multiple attributes and one or more of these, referring to a key of another table, will come
 added {FK} to his side.
@@ -317,7 +312,7 @@ added {FK} to his side.
 # Physical Design
 ## Implementation Details
 
-Some project implementation details will be modified in order to make the most of the functionality
+Some project implementation details will be modified to make the most of the functionality
 of the DBMS Oracle XE 11g. Because Oracle does not implement the boolean type, this has been simulated
 with a character (CHAR). If it is necessary instead, represent a value chosen between a set
 well defined, you have chosen to use a numeric value.
@@ -352,7 +347,7 @@ CREATE TABLE GIOCATORE
     COLORE             CHAR(1),              -- Identifies the color chosen by the player's armies. It can be: R (Red), N (Black), G (Yellow), V (Green), B (Blue), U (Purple)
     NICKNAME           VARCHAR2(30),         -- Identifies the nickname chosen by the player
     ID_CARTA_OBIETTIVO NUMBER(6),            -- Reference to ID_CARTA in the table CARTA_OBIETTIVO
-    Posizione_Turno    NUMBER(1),            -- It establishes numerically (from 1 to 6 according to the players) the turn / turn of the various players. (editor's note: in particular to whom it belongs)
+    Posizione_Turno    NUMBER(1),            -- It establishes numerically (from 1 to 6 according to the players) the turn/turn of the various players. (editor's note: in particular to whom it belongs)
     N_Armate_Tot       NUMBER(32) DEFAULT 0, -- Information relating to the total armies owned by the player worldwide
     
     /* Constraints */
@@ -367,11 +362,11 @@ CREATE TABLE GIOCATORE
 ### Table Definition: TURNO
 
 ```sql
-/* TURNO: it contains information regarding every single turn played by each player in the game. Turn allows you to create order based on the actions performed */
+/* TURNO: it contains information regarding every single turn played by each player in the game. Turn allows you to create an order based on the actions performed */
 CREATE TABLE TURNO
 (
     /* Key attributes */
-    ID_TURNO    NUMBER(6) DEFAULT 0, -- Increasing numerical value that identifies each player's turn. When turn is 0 (zero) the actions of the preliminary turn are performed (player account, spin choice, card assignment etc ...)
+    ID_TURNO    NUMBER(6) DEFAULT 0, -- Increasing numerical value that identifies each player's turn. When a turn is 0 (zero) the actions of the preliminary turn are performed (player account, spin choice, card assignment etc ...)
     ID_PARTITA  NUMBER(6) NOT NULL,  -- Reference to ID_PARTITA in the table PARTITA
 
     /* Attributes */
@@ -432,7 +427,7 @@ CREATE TABLE POSIZIONAMENTO_ARMATA
     ID_PARTITA        NUMBER(6) NOT NULL,               -- Reference to ID_PARTITA in the table TURNO->PARTITA
 
     /* Attributes */
-    RINFORZI_TRUPPE   NUMBER(3) NOT NULL,               -- Number of troops the player earns after each turn and / or from the bonus card he has available
+    RINFORZI_TRUPPE   NUMBER(3) NOT NULL,               -- Number of troops the player earns after each turn and/or from the bonus card he has available
     TIPO_POSIZIONAMENTO NUMBER(1) NOT NULL,             -- Numeric value indicating the type of positioning made by the player
     
     ID_TERRITORIO_POS NUMBER(2) NOT NULL,
@@ -492,7 +487,7 @@ CREATE TABLE LANCIO_DADI
     ID_PARTITA    NUMBER(6) NOT NULL,  -- Reference to ID_PARTITA in the table TURNO->PARTITA
     
     /* Attributes */
-    DADO1_ATT     NUMBER(1) NOT NULL,  -- Dice 1 used by the attacker (Not null requires that there must be at least one die to be rolled in order to be in the combat / defense phase)
+    DADO1_ATT     NUMBER(1) NOT NULL,  -- Dice 1 used by the attacker (Not null requires that there must be at least one die to be rolled in order to be in the combat/defense phase)
     DADO2_ATT     NUMBER(1),           -- Dice 2 used by the attacker
     DADO3_ATT     NUMBER(1),           -- Dice 3 used by the attacker
     DADO1_DIFF    NUMBER(1) NOT NULL,  -- Dice 1 used by the defender
@@ -594,11 +589,10 @@ CREATE TABLE TERRITORIO_OCCUPATO
 ## Association Table Definition: Ass_Carta_Terr_Giocatore
 
 This table represents the association between the PLAYER table and the CARTA_TERRITORIO table
-of the "One to Many" type. Each player can or may not have cards; in fact these are assigned
+of the "One to Many" type. Each player can or may not have cards; these are assigned
 only after the first conquest of each turn. In addition, they are used to obtain particular combinations
 to get additional wagons. After this action, the cards used for that purpose must
-be taken to the player. To avoid redundancies and facilitate the task of controlling combinations a
-each player's position, he preferred to enter the table's keys **GIOCATORE** and the table
+be taken to the player. To avoid redundancies and facilitate the task of controlling combinations of each player's position, he preferred to enter the table's keys **GIOCATORE** and the table
 **CARTA_TERRITORIO** in this table.
 
 ```sql
