@@ -47,19 +47,19 @@ in all its details. In addition, all appropriate constraints are checked.
 ## Implementation adopted
 ### Constructive choices used to solve the problem
 
-Mainly the database has been structured to maintain the information pertaining to each game and automation
+Mainly the database has been structured about each game and automation
 of certain actions. Its construction is developed taking into account the regulation
 classical game by excluding the "tournament rules".
 
-The logical process that saves the information pertaining to each single game in the database
-following a straight line. First, defines what are the elements
+The logical process saves the information about every single game in the database
+following a straight line. First, defines what are the elements of a 
 persistent project; such as objective cards, territories, and the entire communication system boundaries
-among the territories for creating the game map. These elements represent the base on
+among the territories for creating the game map. These elements represent the base on which
 to carry out the whole project.
 
-In order to break a single game on the other, as well as a player on the other, they are introduced
+To break a single game on the other, as well as a player on the other, they are introduced
 numeric keys that allow the identification of a game or a player in the manner
-more consonant. The entire database works with these numeric keys for later step execution
+more consonant. The entire database works with these numeric keys for the later step execution
 step of a game. This brings each game a numeric value, as well as the
 single players to which a numeric value from 1-6 will be associated. The union of the two numeric values
 lets you locate a given player in a chosen game. This management represents the part
@@ -67,8 +67,7 @@ not visible to the user. The end user will be able to use the "names" of the pla
 Priority will then be the database to formulate the search using the numeric keys.
 
 Defined the game and the players, as by regulation there are three stages on which it develops
-game: Armed Forces, Fighting and Moving. All three phases are managed through
-of shifts. A turn represents the exact occurrence of all three phases. It is managed by
+game: Armed Forces, Fighting and Moving. All three phases are managed through shifts. A turn represents the exact occurrence of all three phases. It is managed by
 increasing sequential numeric values. Each player's turn will be associated with the player
 three phases. The choice of the player to handle the turn is handled by the database.
 This associates with each player, in addition to his previously seen ID, another numeric value
